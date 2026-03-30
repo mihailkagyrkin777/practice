@@ -1,17 +1,24 @@
-workflow:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
+name: build
 
-stages:
-  - build
+on:
+  pull_request:
+    branches:
+      - main
 
-build_job:
-  stage: build
-  tags:
-    - saas-linux-small-amd64
-  image: eclipse-temurin:21-jdk
-  script:
-    - ./mvnw clean package
-  artifacts:
-    paths:
-      - ./target/*.jar
+jobs:
+  build_job:
+    runs-on: saas-linux-small-amd64
+    container:
+      image: eclipse-temurin:21-jdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: ./mvnw clean package
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar
+          path: target/*.jar
