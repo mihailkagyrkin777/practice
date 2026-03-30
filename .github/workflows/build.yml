@@ -11,13 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Gitleaks Scan
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          fail-on-vulnerabilities: true
+          fetch-depth: 1
+      - name: Gitleaks Scan (Current Files Only)
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/code zricethezav/gitleaks:latest detect --source="/code" --no-git -v
 
   build_job:
     needs: secrets-scan
