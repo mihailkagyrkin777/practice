@@ -93,7 +93,7 @@ jobs:
         continue-on-error: true
   security-check:
     runs-on: ubuntu-latest
-    needs: [ sast, dependency-scan, dast ]
+    needs: [sast, dependency-scan, dast]
     if: always()
     steps:
       - uses: actions/checkout@v4
