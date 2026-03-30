@@ -27,6 +27,7 @@ jobs:
           path: target/*.jar
 
   sast:
+    needs: build_job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
