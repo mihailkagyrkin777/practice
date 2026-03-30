@@ -4,6 +4,12 @@ on:
   pull_request:
     branches:
       - main
+      - dopzadanie2
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
 
 jobs:
   secrets-scan:
@@ -132,9 +138,12 @@ jobs:
           ignore-unfixed: true
 
       - name: Login and Push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${GITHUB_TOKEN}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           docker push "ghcr.io/${{ env.REPO_LC }}:latest"
+
 
   security-check:
     runs-on: ubuntu-latest
