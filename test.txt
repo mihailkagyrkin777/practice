@@ -1,2 +1,0 @@
-test bas2302
-password = "AKIAIMNO789ABCDEF123"
